@@ -4,6 +4,7 @@ namespace Sudoku
 {
     class Program
     {
+        Sudoku sudoku;
         static void Main(string[] args)
         {
             Program program = new Program();
@@ -15,6 +16,17 @@ namespace Sudoku
         public void Start()
         {
             PrintFrame();
+
+            Random random = new Random();
+            sudoku = new Sudoku(PrintDigit);
+
+            for (int x = 0; x < Sudoku.max; x++)
+            {
+                for (int y = 0; y < Sudoku.max; y++)
+                {
+                    sudoku.PlaceDigit(x, y, random.Next(0, 10));
+                }
+            }
         }
 
         public void PrintFrame()
@@ -46,6 +58,15 @@ namespace Sudoku
                     Console.WriteLine(symbol);
                 }
             }
+        }
+
+        public void PrintDigit(int x, int y, int digit)
+        {
+            int px = 1 + x + x / Sudoku.sqr;
+            int py = 1 + y + y / Sudoku.sqr;
+            
+            Console.SetCursorPosition(px, py);
+            Console.Write(digit == 0 ? " " : digit.ToString());
         }
     }
 }
