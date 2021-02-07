@@ -17,14 +17,19 @@ namespace Sudoku
         {
             PrintFrame();
 
-            Random random = new Random();
             sudoku = new Sudoku(PrintDigit);
+            GenerateRandom();
+        }
+
+        private void GenerateRandom()
+        {
+            Random random = new Random();
 
             for (int x = 0; x < Sudoku.max; x++)
             {
                 for (int y = 0; y < Sudoku.max; y++)
                 {
-                    sudoku.PlaceDigit(x, y, random.Next(0, 10));
+                    sudoku.PlaceDigit(x, y, random.Next(0, Sudoku.max + 1));
                 }
             }
         }
