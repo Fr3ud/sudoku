@@ -30,6 +30,35 @@ namespace Sudoku
 
         public bool PlaceDigit(int x, int y, int digit)
         {
+            if (x < 0 || x >= Sudoku.max) return false;
+            if (y < 0 || y >= Sudoku.max) return false;
+            if (digit <= 0 || digit > Sudoku.max) return false;
+            
+            if (map[x, y] != 0) return false;
+            if (map[x, y] == digit) return true;
+
+            for (int cx = 0; cx < Sudoku.max; cx++)
+            {
+                if (map[cx, y] == digit) return false;
+            }            
+            
+            for (int cy = 0; cy < Sudoku.max; cy++)
+            {
+                if (map[x, cy] == digit) return false;
+            }
+
+            // The coordinates of the top-left corner of the current square
+            int sx = Sudoku.sqr * (x / Sudoku.sqr);
+            int sy = Sudoku.sqr * (y / Sudoku.sqr);
+
+            for (int cx = sx; cx < sx + Sudoku.sqr; cx++)
+            {
+                for (int cy = sy; cy < sy + Sudoku.sqr; cy++)
+                {
+                    if (map[cx, cy] == digit) return false;
+                }
+            }
+            
             map[x, y] = digit;
             PrintDigit(x, y, digit);
 
