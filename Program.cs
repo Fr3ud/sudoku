@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Threading;
 
 namespace Sudoku
 {
@@ -18,7 +20,8 @@ namespace Sudoku
             PrintFrame();
 
             sudoku = new Sudoku(PrintDigit);
-            GenerateRandom();
+            // GenerateRandom();
+            LoadSudoku("../../../sudoku.txt");
         }
 
         private void GenerateRandom()
@@ -72,6 +75,36 @@ namespace Sudoku
             
             Console.SetCursorPosition(px, py);
             Console.Write(digit == 0 ? " " : digit.ToString());
+            Thread.Sleep(100);
+        }
+
+        public void LoadSudoku(string filename)
+        {
+            string[] lines = File.ReadAllLines(filename);
+            int j = 0;
+            for (int sqrY = 0; sqrY < Sudoku.sqr; sqrY++)
+            {
+                for (int sqrX = 0; sqrX < Sudoku.sqr; sqrX++)
+                {
+                    for (int boxY = 0; boxY < Sudoku.sqr; boxY++)
+                    {
+                        for (int boxX = 0; boxX < Sudoku.sqr; boxX++)
+                        {
+                            if (j < lines.Length)
+                            {
+                                if (lines[j].Length == 1)
+                                {
+                                    sudoku.PlaceDigit(
+                                        sqrX * Sudoku.sqr + boxX,
+                                        sqrY * Sudoku.sqr + boxY,
+                                        Convert.ToInt32(lines[j]));
+                                }
+                                j++;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
