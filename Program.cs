@@ -19,7 +19,7 @@ namespace Sudoku
         {
             PrintFrame();
 
-            sudoku = new Sudoku(PrintDigit);
+            sudoku = new Sudoku(PrintDigit, SaveAnswer);
             // GenerateRandom();
             LoadSudoku("../../../sudoku.txt");
             Console.ForegroundColor = ConsoleColor.Green;
@@ -43,19 +43,19 @@ namespace Sudoku
         {
             int frameSize = Sudoku.sqr + 1;
             string symbol = " ";
-            for (int x = 0; x <= frameSize * Sudoku.sqr; x++)
+            for (int px = 0; px <= frameSize * Sudoku.sqr; px++)
             {
-                for (int y = 0; y <= frameSize * Sudoku.sqr; y++)
+                for (int py = 0; py <= frameSize * Sudoku.sqr; py++)
                 {
-                    if (x % frameSize == 0 && y % frameSize == 0)
+                    if (px % frameSize == 0 && py % frameSize == 0)
                     {
                         symbol = "+";
                     }
-                    else if (x % frameSize == 0)
+                    else if (px % frameSize == 0)
                     {
                         symbol = "|";
                     }
-                    else if (y % frameSize == 0)
+                    else if (py % frameSize == 0)
                     {
                         symbol = "-";
                     }
@@ -64,7 +64,7 @@ namespace Sudoku
                         symbol = " ";
                     }
                     
-                    Console.SetCursorPosition(x, y);
+                    Console.SetCursorPosition(px, py);
                     Console.WriteLine(symbol);
                 }
             }
@@ -106,6 +106,44 @@ namespace Sudoku
                         }
                     }
                 }
+            }
+        }
+
+        public void SaveAnswer()
+        {
+            using (StreamWriter file = new StreamWriter("../../../solver.txt"))
+            {
+                int frameSize = Sudoku.sqr + 1;
+                string symbol = " ";
+                for (int py = 0; py <= frameSize * Sudoku.sqr; py++)
+                {
+                    for (int px = 0; px <= frameSize * Sudoku.sqr; px++)
+                    {
+                        if (px % frameSize == 0 && py % frameSize == 0)
+                        {
+                            symbol = "+";
+                        }
+                        else if (px % frameSize == 0)
+                        {
+                            symbol = "|";
+                        }
+                        else if (py % frameSize == 0)
+                        {
+                            symbol = "-";
+                        }
+                        else
+                        {
+                            int x = px - 1 - px / (Sudoku.sqr + 1);
+                            int y = py - 1 - py / (Sudoku.sqr + 1);
+                            symbol = sudoku.map[x, y].ToString();
+                        }
+                    
+                        file.Write(symbol);
+                    }
+                    
+                    file.WriteLine();
+                }
+                Console.ReadKey();
             }
         }
     }

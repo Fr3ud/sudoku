@@ -3,6 +3,7 @@ using System;
 namespace Sudoku
 {
     public delegate void dePrintDigit(int x, int y, int digit);
+    public delegate void deSaveAnswer();
     public class Sudoku
     {
         public const int max = 9; // field size
@@ -11,11 +12,13 @@ namespace Sudoku
         public int [,] map { get; private set; }
         
         private dePrintDigit PrintDigit;
+        private deSaveAnswer SaveAnswer;
 
-        public Sudoku(dePrintDigit printDigit)
+        public Sudoku(dePrintDigit printDigit, deSaveAnswer saveAnswer)
         {
             map = new int[max, max];
             PrintDigit = printDigit;
+            SaveAnswer = saveAnswer;
             ClearMap();
         }
 
@@ -76,11 +79,6 @@ namespace Sudoku
 
             map[x, y] = 0;
             PrintDigit(x, y, 0);
-        }
-
-        private void SaveAnswer()
-        {
-            Console.ReadKey();
         }
 
         private bool found;
