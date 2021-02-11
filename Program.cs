@@ -20,22 +20,36 @@ namespace Sudoku
             PrintFrame();
 
             sudoku = new Sudoku(PrintDigit, SaveAnswer);
-            // GenerateRandom();
-            LoadSudoku("../../../sudoku.txt");
-            Console.ForegroundColor = ConsoleColor.Green;
-            sudoku.Solve();
+            // LoadSudoku("../../../sudoku.txt");
+            do
+            {
+                Console.ForegroundColor = ConsoleColor.Gray;
+                GenerateRandom(30);
+                Console.ForegroundColor = ConsoleColor.Green;
+            } while (!sudoku.Solve());
         }
 
-        private void GenerateRandom()
+        private void GenerateRandom(int count)
         {
             Random random = new Random();
+            
+            if (count == 0) return;
+            if (count > Sudoku.max * Sudoku.max) return;
 
-            for (int x = 0; x < Sudoku.max; x++)
+            sudoku.ClearMap();
+
+            for (int c = 0; c < count; c++)
             {
-                for (int y = 0; y < Sudoku.max; y++)
+                int x, y, d;
+                int loop = 500;
+                
+                do
                 {
-                    sudoku.PlaceDigit(x, y, random.Next(0, Sudoku.max + 1));
-                }
+                    x = random.Next(0, Sudoku.max);
+                    y = random.Next(0, Sudoku.max);
+                    d = random.Next(1, Sudoku.max + 1);
+                } while (--loop > 0 && !sudoku.PlaceDigit(x, y, d));
+
             }
         }
 
@@ -77,7 +91,7 @@ namespace Sudoku
             
             Console.SetCursorPosition(px, py);
             Console.Write(digit == 0 ? " " : digit.ToString());
-            Thread.Sleep(100);
+            // Thread.Sleep(1);
         }
 
         public void LoadSudoku(string filename)
@@ -143,6 +157,8 @@ namespace Sudoku
                     
                     file.WriteLine();
                 }
+                Console.SetCursorPosition(0, 14);
+                Console.WriteLine("SOLVED");
                 Console.ReadKey();
             }
         }

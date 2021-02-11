@@ -22,7 +22,7 @@ namespace Sudoku
             ClearMap();
         }
 
-        private void ClearMap()
+        public void ClearMap()
         {
             for (int x = 0; x < max; x++)
             {
