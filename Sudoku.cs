@@ -1,3 +1,5 @@
+using System;
+
 namespace Sudoku
 {
     public delegate void dePrintDigit(int x, int y, int digit);
@@ -63,6 +65,60 @@ namespace Sudoku
             PrintDigit(x, y, digit);
 
             return true;
+        }
+        
+        private void ClearDigit(int x, int y)
+        {
+            if (x < 0 || x >= Sudoku.max) return;
+            if (y < 0 || y >= Sudoku.max) return;
+            
+            if (map[x, y] == 0) return;
+
+            map[x, y] = 0;
+            PrintDigit(x, y, 0);
+        }
+
+        private void SaveAnswer()
+        {
+            Console.ReadKey();
+        }
+
+        private bool found;
+
+        public bool Solve()
+        {
+            found = false;
+            NextDigit(0);
+            return found;
+        }
+
+        private void NextDigit(int step)
+        {
+            if (found) return;
+            if (step == max * max)
+            {
+                found = true;
+                SaveAnswer();
+                return;;
+            }
+
+            int x = step % max;
+            int y = step / max;
+
+            if (map[x, y] > 0)
+            {
+                NextDigit(step + 1);
+                return;
+            }
+
+            for (int d = 1; d <= max; d++)
+            {
+                if (PlaceDigit(x, y, d))
+                {
+                    NextDigit(step + 1);
+                    ClearDigit(x, y);
+                }
+            }
         }
     }
 }

@@ -22,6 +22,8 @@ namespace Sudoku
             sudoku = new Sudoku(PrintDigit);
             // GenerateRandom();
             LoadSudoku("../../../sudoku.txt");
+            Console.ForegroundColor = ConsoleColor.Green;
+            sudoku.Solve();
         }
 
         private void GenerateRandom()
